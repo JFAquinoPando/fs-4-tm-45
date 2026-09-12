@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('tareas', function (Blueprint $table) {
             $table->id();
+            $table->string("descripcion");
+            $table->boolean("prioridad");
+            $table->boolean("realizado");
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

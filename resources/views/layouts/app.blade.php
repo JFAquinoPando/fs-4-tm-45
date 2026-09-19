@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'TodoList App')</title>
     <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -22,7 +22,8 @@
                 }
             }
         }
-    </script>
+    </script> -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-full flex flex-col font-sans text-slate-800 antialiased">
     <!-- Navbar -->

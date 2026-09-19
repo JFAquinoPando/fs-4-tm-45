@@ -3,6 +3,7 @@
 @section('title', 'Lista de Tareas - TodoList')
 
 @section('content')
+
 <div class="space-y-6">
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
@@ -20,41 +21,51 @@
 
     <!-- Stats Overview -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                </svg>
-            </div>
-            <div>
-                <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Total</p>
-                <p class="text-2xl font-bold text-slate-800">{{ isset($tareas) ? count($tareas) : 0 }}</p>
-            </div>
-        </div>
 
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-            </div>
-            <div>
-                <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Realizadas</p>
-                <p class="text-2xl font-bold text-slate-800">{{ isset($tareas) ? $tareas->where('realizado', true)->count() : 0 }}</p>
-            </div>
-        </div>
+        @php
+        $datosUsar = [
+            [
+                "titulo" => "Total x",
+                "color" => "indigo",
+                "icono" => "total.svg",
+                "dato" =>  isset($tareas) ? count($tareas) : 0
+            ],
+            [
+                "titulo" => "Realizadas",
+                "color" => "emerald",
+                "icono" => "realizado.svg",
+                "dato" => isset($tareas) ? $tareas->where('realizado', true)->count() : 0
+            ],
+            [
+                "titulo" => "Pendientes",
+                "color" => "amber",
+                "icono" => "pendientes.svg",
+                "dato" =>  isset($tareas) ? $tareas->where('realizado', false)->count() : 0
+            ],
+        ];
+        @endphp
+        @foreach ($datosUsar as $metrica)
+            <x-tarjetas 
+                titulo="{{ $metrica['titulo'] }}" 
+                fondoColor="{{ $metrica['color'] }}" 
+                icono="{{ $metrica['icono'] }}"
+                class="hover:bg-slate-900 hover:text-amber-50"
+                >
+                {{ $metrica['dato'] }}
+            </x-tarjetas>
+        @endforeach
 
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-            </div>
-            <div>
-                <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Pendientes</p>
-                <p class="text-2xl font-bold text-slate-800">{{ isset($tareas) ? $tareas->where('realizado', false)->count() : 0 }}</p>
-            </div>
-        </div>
+        <!-- <x-tarjetas titulo="Total" fondoColor="indigo" icono='total.svg'>
+                {{ isset($tareas) ? count($tareas) : 0 }}
+        </x-tarjetas>
+
+        <x-tarjetas titulo="Realizadas" fondoColor="emerald" icono="realizado.svg">
+                {{ isset($tareas) ? $tareas->where('realizado', true)->count() : 0 }}
+        </x-tarjetas>
+
+         <x-tarjetas titulo="Pendientes" fondoColor="amber" icono="pendientes.svg">
+                {{ isset($tareas) ? $tareas->where('realizado', false)->count() : 0 }}
+        </x-tarjetas> -->
     </div>
 
     <!-- Task List -->
